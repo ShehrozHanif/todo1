@@ -1,0 +1,51 @@
+---
+id: 103
+title: Generate Actionable Tasks for Todo App MVP
+stage: tasks
+date: 2025-12-12
+surface: agent
+model: gemini
+feature: 001-todo-app-mvp
+branch: 001-todo-app-mvp
+user: Haji
+command: /sp.tasks
+labels: ["tasks", "planning"]
+links:
+  spec: specs/001-todo-app-mvp/spec.md
+  ticket: null
+  adr: null
+  pr: null
+files:
+  - specs/001-todo-app-mvp/tasks.md
+tests:
+  []
+---
+
+## Prompt
+
+/sp.tasks Context for task generation: # Tasks — Todo App (Next.js + localStorage) This file breaks the Plan into small, actionable tasks suitable for one-person work or small PRs. Each task includes a description, acceptance criteria, estimated files changed/created, and an estimated effort/PR size (S/M/L). --- ## How to use this list * Implement tasks in the given order for a fast MVP. * Keep PRs small: one feature per PR is ideal. * Tag PRs with `speckit/mvp` and include a short demo GIF or screenshots for the client. --- ## Task 0 — Repo scaffold (PR 1) **Description:** Initialize the repository with Next.js (TypeScript), Tailwind, ESLint, Prettier, Jest, GitHub Actions, `.gitignore`, `.editorconfig`, optional Husky + lint-staged hooks, and basic PR/issue templates. **Acceptance Criteria:** * `package.json` with scripts (`dev`, `build`, `start`, `lint`, `test`, `format`). * `tsconfig.json` with `strict: true`. * Tailwind configured and global stylesheet added. * ESLint + Prettier config files present. * `.gitignore` and `.editorconfig` added. * Optional: Husky + lint-staged configured for pre-commit lint/format. * Default issue template and PR template added. * Basic GitHub Actions workflow (`lint`, `test`, `build`). **Files changed/created (est.):** 12–16 (package.json, tsconfig.json, tailwind.config.js, postcss.config.js, .eslintrc, .prettierrc, .editorconfig, .gitignore, husky config, lint-staged config, .github/PULL_REQUEST_TEMPLATE.md, .github/ISSUE_TEMPLATE.md, .github/workflows/ci.yml, styles/globals.css) **PR size:** M --- ## Task 1 — Storage adapter & models (PR 2) **Description:** Implement `lib/storage.ts` and the Todo model utilities (create, validate, load, save, migration helpers). Use versioned key `speckit_todos_v1`. **Acceptance Criteria:** * `lib/storage.ts` exposes: `loadTodos()`, `saveTodos(todos)`, `createTodo(payload)`, `updateTodo(todo)`, `deleteTodo(id)`, `seedDemoTodosIfEmpty()`. * Includes safe JSON parse with fallback and migration stub. * Unit tests for `loadTodos`, `saveTodos`, `createTodo` using Jest. **Files changed/created (est.):** 3–5 (`lib/storage.ts`, `__tests__/storage.test.ts`, optionally `lib/todoModel.ts`) **PR size:** M --- ## Task 2 — App shell & layout (PR 3) **Description:** Create the main app shell and layout: `pages/_app.tsx`, `pages/index.tsx`, `components/Header.tsx`, and `styles/globals.css` integration. **Acceptance Criteria:** * App loads without errors. * Header shows app title and placeholder for search & theme toggle. * Root container uses Tailwind, responsive layout. **Files changed/created (est.):** 4–6 (`pages/_app.tsx`, `pages/index.tsx`, `components/Header.tsx`, `styles/globals.css`) **PR size:** S --- ## Task 3 — TodoForm component (PR 4) **Description:** Build `TodoForm.tsx` with fields (title, description, dueDate, priority, tags). Enforce validation (trim, max lengths). On submit call storage/create flow. **Acceptance Criteria:** * Form validates title and description length. * Submit creates a new todo in state and persists. * Keyboard: Enter adds when title focused. **Files changed/created (est.):** 2 (`components/TodoForm.tsx`, small update to `pages/index.tsx` to wire) **PR size:** S --- ## Task 4 — TodoList + TodoItem (PR 5) **Description:** Implement `TodoList.tsx` and `TodoItem.tsx`. Render list, show priority, tags as `TagBadge`, support inline title edit (double-click), checkbox to toggle complete, delete action, and overdue highlight. **Acceptance Criteria:** * List renders todos from storage. * Toggle complete updates todo and persists. * Inline title edit function (double-click → input → blur/Enter to save). * Tag badges are clickable and trigger tag filter. * Overdue items visually highlighted. **Files changed/created (est.):** 4 (`components/TodoList.tsx`, `components/TodoItem.tsx`, `components/TagBadge.tsx`, update `pages/index.tsx` wiring) **PR size:** L --- ## Task 5 — EditModal component (PR 6) **Description:** Implement `EditModal.tsx` to edit full todo fields (title, description, dueDate, priority, tags). Validate inputs and update storage on save. **Acceptance Criteria:** * Modal opens with existing todo data, allows edits, saves updates to storage and triggers re-sort. * Esc closes modal without saving. **Files changed/created (est.):** 2–3 (`components/EditModal.tsx`, update `components/TodoItem.tsx` to open modal) **PR size:** M --- ## Task 6 — Filters, Sort & Search (PR 7) **Description:** Implement filter controls (All/Active/Completed), sort controls (Newest/Due Date/Priority), and search input (search title/description/tags). Persist filter & sort in storage; search does not persist. **Acceptance Criteria:** * UI controls for filter + sort + search present and functional. * Filter+sort persist between reloads; search resets. * Sequence: Filter → Search → Sort applied. **Files changed/created (est.):** 3 (`components/FilterBar.tsx`, update `pages/index.tsx`, utility functions) **PR size:** M --- ## Task 7 — Settings Panel & Dark Mode (PR 8) **Description:** Add `SettingsPanel.tsx` with theme toggle, keyboard shortcuts help, and “Reset demo data” action. Implement dark mode via `useTheme()` and persist preference. **Acceptance Criteria:** * Theme toggling updates UI and persists to storage. * Settings panel shows keyboard shortcuts and a reset button that clears todos and seeds demo data. **Files changed/created (est.):** 3 (`components/SettingsPanel.tsx`, `lib/theme.ts`, small CSS updates) **PR size:** M --- ## Task 8 — Keyboard Shortcuts (PR 9) **Description:** Implement global keyboard handlers: Enter (add when title focused), Esc (close modal), Cmd/Ctrl+K (focus search). Use a small helper hook `useShortcuts()`. **Acceptance Criteria:** * Shortcuts work across pages and contexts. * Clear docs in Settings panel. **Files changed/created (est.):** 2 (`hooks/useShortcuts.ts`, minor wiring in `pages/_app.tsx`) **PR size:** S --- ## Task 9 — Tests & Accessibility (PR 10) **Description:** Add Jest tests for storage utilities and a couple of component tests for `TodoForm` and `TodoList`. Run basic axe checks locally and fix major issues. **Acceptance Criteria:** * Unit tests for `lib/storage.ts` pass. * At least 2 component tests pass. * No critical axe violations in main page. **Files changed/created (est.):** 4–6 (`__tests__/...`, test utils, jest config) **PR size:** M --- ## Task 10 — Polish & Responsive QA (PR 11) **Description:** Final UI polish: spacing, focus states, mobile adjustments, small animations, and collection of screenshots/GIFs for README/PRs. **Acceptance Criteria:** * App looks good on mobile and desktop. * Keyboard navigation is complete. * Provide demo GIF and screenshots in PR. **Files changed/created (est.):** varies (CSS, minor component tweaks) **PR size:** M --- ## Task 11 — Prepare README, LICENSE, CI, Deploy (PR 12) **Description:** Add README with run/deploy instructions, add MIT license, add CONTRIBUTING guidelines, finalize GitHub Actions, add convenience npm scripts (`seed:demo`, `reset:storage`), include PR/issue templates, and deploy to Vercel. **Acceptance Criteria:** * README includes run, build, test, and deploy steps. * LICENSE is MIT. * CONTRIBUTING.md added with branch naming guidance (`feature/*`, `fix/*`) and review requirements. * NPM scripts `seed:demo` and `reset:storage` added. * Default PR and issue templates present. * CI workflow green on main branch. * Deployed site available on Vercel. * Demo todos seeded automatically (5 items including Ted Menden & Chad CN). **Files changed/created (est.):** 8–12 (`README.md`, `LICENSE`, `CONTRIBUTING.md`, `.github/workflows/ci.yml`, npm script updates in package.json, `.github/PULL_REQUEST_TEMPLATE.md`, `.github/ISSUE_TEMPLATE.md`, environment docs) **PR size:** S --- ## Optional / Future Tasks (not required for MVP) * Add drag-and-drop ordering (react-beautiful-dnd) — large task * Add Supabase backend and auth — large effort * Add E2E tests with Playwright/Cypress — medium to large * Add analytics hooks and opt-in telemetry — small --- ## Estimated total effort * Roughly **11–14 PRs** depending on how granular you split work. * Core MVP (Tasks 0–8 + 10–11) should be achievable in **2–4 developer days** for an experienced frontend dev, or about **1–2 weeks** including testing, polish, and review. ---
+
+## Response snapshot
+
+I have generated the `tasks.md` file for the "Todo App MVP" feature.
+
+- **Tasks File**: `specs/001-todo-app-mvp/tasks.md`
+
+The file contains a detailed, sequential breakdown of all implementation steps, from repository setup to final deployment. The tasks are grouped by phases corresponding to expected Pull Requests.
+
+The project is now ready for implementation. You can start with the first task, `T001`.
+
+## Outcome
+
+- ✅ Impact: Successfully generated a detailed, sequential task list for implementing the Todo App MVP.
+- 🧪 Tests: No tests were run.
+- 📁 Files: Created tasks.md by reformatting the user's provided task breakdown into the required checklist structure.
+- 🔁 Next prompts: `/sp.implement` or begin implementing the tasks manually starting with T001.
+- 🧠 Reflection: The user provided a complete task list, which was more effective than generating one from scratch. The main work was reformatting and structuring it according to the template rules. Reconciling the user's PR-based structure with the template's user-story-based structure was the key decision.
+
+## Evaluation notes (flywheel)
+
+- Failure modes observed: The prerequisite check script failed to identify `spec.md` and `plan.md`, requiring me to manually specify their paths.
+- Graders run and results (PASS/FAIL): N/A
+- Prompt variant (if applicable): N/A
+- Next experiment (smallest change to try): Improve the prerequisite check script to reliably find all relevant design documents.
