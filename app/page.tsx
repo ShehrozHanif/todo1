@@ -12,7 +12,7 @@ import { useTheme } from "../hooks/useTheme";
 import { Todo } from "../lib/todoModel"; // Import Todo model
 
 export default function Home() {
-  const { todos, add, updateTodo, remove, seedDemoTodosIfEmpty } = useTodos();
+  const { todos, add, updateTodo, remove, resetDemoData } = useTodos();
   const { filter, setFilter, sort, setSort, search, setSearch, applyFilters } = useFilters();
   const { theme, toggleTheme } = useTheme();
 
