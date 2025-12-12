@@ -6,6 +6,12 @@ interface HeaderProps {
 }
 
 export default function Header({ search, setSearch }: HeaderProps) {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault(); // Prevent any default form submission behavior
+    }
+  };
+
   return (
     <header className="flex justify-between items-center p-4 border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
       <h1 className="text-xl font-bold text-gray-900 dark:text-white">Todo App</h1>
@@ -14,6 +20,7 @@ export default function Header({ search, setSearch }: HeaderProps) {
         placeholder="Search..."
         value={search}
         onChange={e => setSearch(e.target.value)}
+        onKeyDown={handleKeyDown}
       />
     </header>
   );
