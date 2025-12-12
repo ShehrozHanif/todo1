@@ -33,7 +33,15 @@ export default function Home() {
   return (
     <div className={`min-h-screen ${theme === 'dark' ? 'dark bg-gray-900 text-white' : 'bg-gray-100 text-gray-900'}`} key={resetKey}>
       <Header search={search} setSearch={setSearch} />
-      <FilterBar onTagClick={handleTagClick} />
+      <FilterBar
+        onTagClick={handleTagClick}
+        filter={filter}
+        setFilter={setFilter}
+        sort={sort}
+        setSort={setSort}
+        search={search}
+        setSearch={setSearch}
+      />
       <TodoForm onAdd={(newTodo: Todo) => add(newTodo)} />
       <TodoList
         todos={displayedTodos}

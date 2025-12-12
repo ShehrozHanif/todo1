@@ -1,13 +1,17 @@
 import React from "react";
-import { FilterOption, SortOption, useFilters } from "../hooks/useFilters";
+import { FilterOption, SortOption } from "../hooks/useFilters";
 
 interface FilterBarProps {
   onTagClick: (tag: string) => void;
+  filter: FilterOption;
+  setFilter: (filter: FilterOption) => void;
+  sort: SortOption;
+  setSort: (sort: SortOption) => void;
+  search: string;
+  setSearch: (search: string) => void;
 }
 
-export default function FilterBar({ onTagClick }: FilterBarProps) {
-  const { filter, setFilter, sort, setSort, search, setSearch } = useFilters();
-
+export default function FilterBar({ onTagClick, filter, setFilter, sort, setSort, search, setSearch }: FilterBarProps) {
   const handleFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setFilter(e.target.value as FilterOption);
   };
